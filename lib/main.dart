@@ -1,0 +1,85 @@
+import 'package:flutter/material.dart';
+import 'habit_calendar_view.dart';
+import 'habit_list_view.dart';
+import 'habit.dart';
+
+// TODO: figure out how to store state in phone storage between loads of the app
+
+const Color _mainColor = Colors.lime;
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Habit Scratcher',
+      // This is the theme of your application
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: _mainColor),
+        useMaterial3: true,
+      ),
+      home: const MyHomePage(title: 'Habit Scratcher'),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key, required this.title});
+  final String title;
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  int _habitIndex = -1;
+  List<Habit> habits = <Habit>[Habit(title: 'foo', color: Colors.blue),
+                               Habit(title: 'bar', color: Colors.orange), 
+                               Habit(title: 'baz', color: Colors.yellow)];
+
+  updateHabitIndex(int newIndex) {
+    setState(() {
+      _habitIndex = newIndex;
+    });
+  }
+
+  // TODO: should we move list of habits to AppState to update from list view directly
+  // instead of with callbacks?
+  addHabit(Habit newHabit) {
+    setState(() {
+        habits = [...habits, newHabit];
+    });
+  }
+
+  removeHabit(Habit remove) {
+    if (habits.contains(remove)) {
+      throw ArgumentError('Unknown habit');
+    }
+    setState(() {
+      int removeIndex = habits.indexOf(remove);
+      if (removeIndex < habits.length - 1) {
+        habits = [...habits.getRange(0, removeIndex), ...habits.getRange(removeIndex + 1, habits.length)];
+      } else {
+        habits = [...habits.getRange(0, removeIndex)];
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_habitIndex < 0) {
+      return HabitListPage(title: widget.title, habits: habits, updateHabitIndex: updateHabitIndex);
+    } else if (_habitIndex < habits.length) {
+      return HabitViewPage(habit: habits[_habitIndex], updateHabitIndex: updateHabitIndex);
+    } else {
+      throw UnsupportedError('Unknown State');
+    }
+  }
+}
+
