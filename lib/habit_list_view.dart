@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'habit.dart';
 
+// TODO: dedup with an app theme
+const Color MAIN_COLOR = Colors.lime;
+
 class HabitListPage extends StatelessWidget {
   const HabitListPage({super.key, required this.title, required this.habits, required this.updateHabitIndex});
   final String title;
@@ -28,7 +31,7 @@ class HabitListPage extends StatelessWidget {
                 // maybe remove this icon, a little unintuitive since this isn't a button anymore
                 leading: Icon(Icons.menu, size: 40),
                 title: Center(child: Text(title)),
-                tileColor: _mainColor,
+                tileColor: MAIN_COLOR,
               ),
             ),
   

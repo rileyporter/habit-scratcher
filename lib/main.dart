@@ -5,7 +5,7 @@ import 'habit.dart';
 
 // TODO: figure out how to store state in phone storage between loads of the app
 
-const Color _mainColor = Colors.lime;
+const Color MAIN_COLOR = Colors.lime;
 
 void main() {
   runApp(const MyApp());
@@ -14,14 +14,13 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Habit Scratcher',
-      // This is the theme of your application
+      // TODO: figure out best practices for app theme
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: _mainColor),
+        colorScheme: ColorScheme.fromSeed(seedColor: MAIN_COLOR),
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'Habit Scratcher'),
