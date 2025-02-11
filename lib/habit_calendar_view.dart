@@ -73,7 +73,7 @@ class HabitCalendar extends StatelessWidget {
       {super.key, required this.habit, required this.dateDisplay, required this.updateDateDisplay});
   final Habit habit;
   // TODO: update this to be index of date to display so that functionality can be added
-  // to iterate through days in the larger display view
+  // to iterate through days in the larger date display view
   final DateData? dateDisplay;
   final Function updateDateDisplay;
 
@@ -101,7 +101,7 @@ class HabitCalendar extends StatelessWidget {
         ],
       );
     } else {
-      return Text('${dateDisplay!.date}');
+      return DateView(dateData: dateDisplay!, completedColor: habit.color);
     }
   }  
 }
@@ -117,12 +117,6 @@ class MonthDisplay extends StatelessWidget {
     for (int i = 0; i < offset; i++) {
       week.add(SizedBox(width: 50, height: 50));
     }
-  }
-
-  // handles clicking on a date's UI element
-  void _handleDateTap(DateData dateData) {
-    dateData.completed = true;
-    updateDateDisplay(dateData);
   }
 
   @override
@@ -148,7 +142,7 @@ class MonthDisplay extends StatelessWidget {
             height: 50,
             child: GestureDetector(
               onTap: () {
-                _handleDateTap(currDate);
+                updateDateDisplay(currDate);
               },
               child: Card(
                 color: currDate.completed ? habit.color : null,
