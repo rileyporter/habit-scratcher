@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'date.dart';
 import 'habit.dart';
 
@@ -42,15 +43,15 @@ class _HabitViewPageState extends State<HabitViewPage> {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(left: 10.0),
-                      child: GestureDetector(
-                        onTap: () {
-                          updateDateDisplay(null);
-                        },
-                        child: ListTile(
-                          title: Center(child: Text(widget.habit.title)),
-                          tileColor: widget.habit.color
+                        child: Semantics(
+                          button: true,
+                          child: ListTile(
+                            onTap: () {updateDateDisplay(null);},
+                            title: Center(child: Text(widget.habit.title)),
+                            tileColor: widget.habit.color
+                          ),
                         ),
-                      ),
+
                     ),
                   ),
                 ],
@@ -89,10 +90,8 @@ class HabitCalendar extends StatelessWidget {
             children: [
               for (int month = 1; month <= 12; month++)
                 Column(
-                  //shrinkWrap: true,
-                  //padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   children: [
-                    Text('$month'),
+                    Text(DateFormat(DateFormat.MONTH).format(DateTime(2025, month))),
                     MonthDisplay(habit: habit, month: month, updateDateDisplay: updateDateDisplay),
                   ],
                 ),
