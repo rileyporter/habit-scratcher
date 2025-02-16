@@ -1,19 +1,28 @@
 import 'package:flutter/material.dart';
 import 'habit.dart';
+import 'add_habit.dart';
 
 // TODO: dedup with an app theme
 const Color MAIN_COLOR = Colors.lime;
 
-class HabitListPage extends StatelessWidget {
-  const HabitListPage({super.key, required this.title, required this.habits, required this.updateHabitIndex});
+class HabitListPage extends StatefulWidget {
+  const HabitListPage({super.key, required this.title, required this.habits, required this.displayHabitAtIndex, required this.addHabit});
   final String title;
   final List<Habit> habits;
-  final Function updateHabitIndex;
+  final Function displayHabitAtIndex;
+  final Function addHabit;
 
-  // how to load a new page, and then route back to the other one?
-  void _createHabit() {
-    print('adding a new habit');
-    // how to create a pop-up?
+  @override
+  State<HabitListPage> createState() => _HabitListPageState();
+}
+
+class _HabitListPageState extends State<HabitListPage> {
+  bool addingHabit = false;
+
+  switchToHabitAdder(bool addingHabit) {
+    setState( () {
+      this.addingHabit = addingHabit;
+    });
   }
 
   @override
@@ -27,57 +36,19 @@ class HabitListPage extends StatelessWidget {
             // top bar
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              child: ListTile(
-                // maybe remove this icon, a little unintuitive since this isn't a button anymore
-                leading: Icon(Icons.menu, size: 40),
-                title: Center(child: Text(title)),
-                tileColor: MAIN_COLOR,
+              child: Semantics(
+                button: true,
+                child: ListTile(
+                  onTap: () => {switchToHabitAdder(false)},
+                  leading: Icon(Icons.menu, size: 40),
+                  title: Center(child: Text(widget.title)),
+                  tileColor: MAIN_COLOR,
+                ),
               ),
             ),
-  
+
             SizedBox(height: 20),
-
-            // list of habits
-            for (int i = 0; i < habits.length; i++)
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 10.0),
-                child: Semantics(
-                  button: true,
-                  child: ListTile(
-                    onTap: () => {updateHabitIndex(i)},
-                    title: Center(child: Text(habits[i].title)),
-                    tileColor: habits[i].color,
-                  ),
-                ),
-              ),
-
-            // plus sign button
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical:10.0),
-              child: TextButton(
-                onPressed: () {
-                  _createHabit();
-                },
-                style: TextButton.styleFrom(
-                  minimumSize: Size.zero,
-                  padding: EdgeInsets.zero,
-                ),
-                child: GestureDetector(
-                  onTap: () {
-                    // TODO: add functionality to add a new habit
-                    /* Steps involved:
-                          - move habit list to state and add callbacks to update list
-                          - making a pop up layer in UI with an input form
-                            - validating habit name input (length restricted?)
-                            - adding a list of possible colors to choose from
-                          - ability to delete habit, maybe a little trash can?
-                    */
-                    _createHabit();
-                  },
-                  child: Icon(Icons.add, size: 60)
-                ),
-              ),
-            ),
+            addingHabit ? NewHabitForm(addHabit: widget.addHabit, switchToHabitAdder: switchToHabitAdder) : HabitList(habits: widget.habits, displayHabitAtIndex: widget.displayHabitAtIndex, switchToHabitAdder: switchToHabitAdder),
 
           ],
         ),
@@ -85,3 +56,50 @@ class HabitListPage extends StatelessWidget {
     );
   }
 }
+
+class HabitList extends StatelessWidget {
+  const HabitList({super.key, required this.habits, required this.displayHabitAtIndex, required this.switchToHabitAdder});
+
+  final List<Habit> habits;
+  final Function displayHabitAtIndex;
+  final Function switchToHabitAdder;
+
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: ability to reorder habits displayed in list
+    return Column(
+      children: [
+        // TODO: wrap list of habits in a scrollable ListView and learn about layout constraints
+        for (int i = 0; i < habits.length; i++)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 10.0),
+            child: Semantics(
+              button: true,
+              child: ListTile(
+                onTap: () => {displayHabitAtIndex(i)},
+                title: Center(child: Text(habits[i].title)),
+                tileColor: habits[i].color,
+              ),
+            ),
+          ),
+          
+        // plus sign button
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical:10.0),
+          child: TextButton(
+            onPressed: () {
+              // switch to HabitAdder display
+              switchToHabitAdder(true);
+            },
+            style: TextButton.styleFrom(
+              minimumSize: Size.zero,
+              padding: EdgeInsets.zero,
+            ),
+            child: Icon(Icons.add, size: 60)
+          ),
+        ),]
+      );
+  }
+}
+

@@ -38,9 +38,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _habitIndex = -1;
-  List<Habit> habits = <Habit>[Habit(title: 'foo', color: Colors.blue),
-                               Habit(title: 'bar', color: Colors.orange), 
-                               Habit(title: 'baz', color: Colors.yellow)];
+  List<Habit> habits = [];
 
   updateHabitIndex(int newIndex) {
     setState(() {
@@ -73,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     if (_habitIndex < 0) {
-      return HabitListPage(title: widget.title, habits: habits, updateHabitIndex: updateHabitIndex);
+      return HabitListPage(title: widget.title, habits: habits, displayHabitAtIndex: updateHabitIndex, addHabit: addHabit);
     } else if (_habitIndex < habits.length) {
       return HabitViewPage(habit: habits[_habitIndex], updateHabitIndex: updateHabitIndex);
     } else {
