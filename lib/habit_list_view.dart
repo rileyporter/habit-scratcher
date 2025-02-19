@@ -76,6 +76,7 @@ class HabitList extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 10.0),
             child: Semantics(
               button: true,
+              // TODO: add an edit button with ability to delete the habit
               child: ListTile(
                 onTap: () => {displayHabitAtIndex(i)},
                 title: Center(child: Text(habits[i].title)),

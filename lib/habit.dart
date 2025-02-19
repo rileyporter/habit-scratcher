@@ -2,28 +2,30 @@ import 'package:flutter/material.dart';
 import 'date.dart';
 import 'dart:math';
 
-const List<Color> COLOR_OPTIONS = [Colors.red,
-                                  Colors.pink,
-                                  Colors.purple,
-                                  Colors.deepPurple,
-                                  Colors.indigo,
-                                  Colors.blue,
-                                  Colors.lightBlue,
-                                  Colors.cyan,
-                                  Colors.teal,
-                                  Colors.green,
-                                  Colors.lightGreen,
-                                  Colors.lime,
-                                  Colors.yellow,
-                                  Colors.amber,
-                                  Colors.orange,
-                                  Colors.deepOrange,
-                                  Colors.brown,
-                                  Colors.blueGrey];
+
 
 class Habit {
   static final Random _random = Random();
-
+  static const List<Color> COLOR_OPTIONS = [Colors.red,
+                                  //Colors.yellow,
+                                  Colors.amber,
+                                  Colors.orange,
+                                  //Colors.deepOrange,
+                                  //Colors.pink,
+                                  Colors.purple,
+                                  //Colors.deepPurple,
+                                  Colors.indigo,
+                                  //Colors.blue,
+                                  //Colors.lightBlue,
+                                  Colors.cyan,
+                                  //Colors.teal,
+                                  //Colors.green,
+                                  Colors.lightGreen,
+                                  //Colors.lime,
+                                  Colors.brown,
+                                  Colors.blueGrey
+                                ];
+  
   final String title;
   late Color color;
   // Map month num -> list[datedata]
