@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'habit.dart';
 
 class NewHabitForm extends StatefulWidget {
-  const NewHabitForm({super.key, required this.addHabit, required this.switchToHabitAdder});
+  const NewHabitForm({super.key, required this.addHabit,
+                      required this.switchToHabitAdder});
   
   final Function addHabit;
   final Function switchToHabitAdder;
@@ -16,6 +17,7 @@ class _NewHabitFormState extends State<NewHabitForm> {
   final _formKey = GlobalKey<FormState>();
   final _formController = TextEditingController();
   Color? _selectedColor = NewHabitForm.DEFAULT_COLOR;
+
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
@@ -47,19 +49,38 @@ class _NewHabitFormState extends State<NewHabitForm> {
         padding: const EdgeInsets.symmetric(horizontal: 30.0),
         child: Column(
           children: [
-            // TODO: add a back button
-            TextFormField(
-              controller: _formController,
-              maxLength: 50,
-              onFieldSubmitted: (value) {_submitForm();},
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter a habit name';
-                }
-                return null;
-              },
+            Wrap(
+              children: [
+                // TODO: switching from an icon to a button added some implicit
+                // margin or padding offset. Figure out where it's coming from
+                // and remove
+                TextButton(
+                  onPressed: () {
+                    widget.switchToHabitAdder(false);
+                  },
+                  style: TextButton.styleFrom(
+                    minimumSize: Size.zero,
+                    padding: EdgeInsets.zero,
+                  ),
+                  child: Icon(Icons.arrow_back, size: 30)
+                ),
+                // TODO: fix row inside column sizing so text input wraps to same
+                // line as back arrow
+                Flexible(
+                  child: TextFormField(
+                    controller: _formController,
+                    maxLength: 50,
+                    onFieldSubmitted: (value) {_submitForm();},
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a habit name';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+              ],
             ),
-            // TODO: add a radio list of the color options
             Wrap(
               children: [
                 for (Color color in Habit.COLOR_OPTIONS)
@@ -69,7 +90,7 @@ class _NewHabitFormState extends State<NewHabitForm> {
               ],
             ),
             SizedBox(height: 30),
-            // TODO: add styling to the button
+            // TODO: add styling to the add habit button
             ElevatedButton(
               onPressed: _submitForm,
               child: const Text('Add Habit'),
@@ -82,15 +103,17 @@ class _NewHabitFormState extends State<NewHabitForm> {
 }
 
 class ColorRadioButton extends StatelessWidget {
-  const ColorRadioButton({super.key, required this.color, required this.updateSelectedColor, required this.selectedColor});
+  const ColorRadioButton({super.key, required this.color, 
+                          required this.updateSelectedColor, 
+                          required this.selectedColor});
   final Color color;
   final Function updateSelectedColor;
   final Color? selectedColor;
   
   @override
   Widget build(BuildContext context) {
-    // TODO: want to scale the radio buttons to be bigger, but that seems to affect
-    //       clicking accuracy for selecting
+    // TODO: want to scale the radio buttons to be bigger, but that seems to
+    // affect clicking accuracy for selecting
     return Radio<Color>(
       value: color,
       groupValue: selectedColor,

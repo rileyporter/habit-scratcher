@@ -6,7 +6,9 @@ import 'add_habit.dart';
 const Color MAIN_COLOR = Colors.lime;
 
 class HabitListPage extends StatefulWidget {
-  const HabitListPage({super.key, required this.title, required this.habits, required this.displayHabitAtIndex, required this.addHabit});
+  const HabitListPage({super.key, required this.title,
+                      required this.habits, required this.displayHabitAtIndex,
+                      required this.addHabit});
   final String title;
   final List<Habit> habits;
   final Function displayHabitAtIndex;
@@ -48,7 +50,11 @@ class _HabitListPageState extends State<HabitListPage> {
             ),
 
             SizedBox(height: 20),
-            addingHabit ? NewHabitForm(addHabit: widget.addHabit, switchToHabitAdder: switchToHabitAdder) : HabitList(habits: widget.habits, displayHabitAtIndex: widget.displayHabitAtIndex, switchToHabitAdder: switchToHabitAdder),
+            addingHabit ? NewHabitForm(addHabit: widget.addHabit,
+                                      switchToHabitAdder: switchToHabitAdder) 
+                        : HabitList(habits: widget.habits, 
+                                    displayHabitAtIndex: widget.displayHabitAtIndex, 
+                                    switchToHabitAdder: switchToHabitAdder),
 
           ],
         ),
@@ -58,7 +64,9 @@ class _HabitListPageState extends State<HabitListPage> {
 }
 
 class HabitList extends StatelessWidget {
-  const HabitList({super.key, required this.habits, required this.displayHabitAtIndex, required this.switchToHabitAdder});
+  const HabitList({super.key, required this.habits, 
+                  required this.displayHabitAtIndex,
+                  required this.switchToHabitAdder});
 
   final List<Habit> habits;
   final Function displayHabitAtIndex;
@@ -70,7 +78,8 @@ class HabitList extends StatelessWidget {
     // TODO: ability to reorder habits displayed in list
     return Column(
       children: [
-        // TODO: wrap list of habits in a scrollable ListView and learn about layout constraints
+        // TODO: wrap list of habits in a scrollable ListView and 
+        //       learn about layout constraints
         for (int i = 0; i < habits.length; i++)
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 10.0),

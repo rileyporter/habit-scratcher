@@ -44,7 +44,9 @@ class Habit {
     for (int month = 1; month <= 12; month++) {
       List<DateData> dates = [];
       for (int day = 1; day <= DateUtils.getDaysInMonth(year, month); day++) {
-        dates.add(DateData(date: DateUtils.dateOnly(DateTime(year, month, day))));
+        dates.add(
+          DateData(date: DateUtils.dateOnly(DateTime(year, month, day)))
+        );
       }
       calendar[month] = dates;
     }

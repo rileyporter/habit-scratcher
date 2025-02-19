@@ -4,7 +4,8 @@ import 'date.dart';
 import 'habit.dart';
 
 class HabitViewPage extends StatefulWidget {
-  const HabitViewPage({super.key, required this.habit, required this.updateHabitIndex});
+  const HabitViewPage({super.key, required this.habit,
+                      required this.updateHabitIndex});
   final Habit habit;
   final Function updateHabitIndex;
 
@@ -61,7 +62,8 @@ class _HabitViewPageState extends State<HabitViewPage> {
             SizedBox(height: 20),
 
             // data for this habit's calendar. let's separate out
-            HabitCalendar(habit: widget.habit, dateDisplay: dateDisplay, updateDateDisplay: updateDateDisplay),
+            HabitCalendar(habit: widget.habit, dateDisplay: dateDisplay,
+                          updateDateDisplay: updateDateDisplay),
           ],
         ),
       ),
@@ -70,11 +72,11 @@ class _HabitViewPageState extends State<HabitViewPage> {
 }
 
 class HabitCalendar extends StatelessWidget {
-  const HabitCalendar(
-      {super.key, required this.habit, required this.dateDisplay, required this.updateDateDisplay});
+  const HabitCalendar({super.key, required this.habit, required this.dateDisplay,
+                      required this.updateDateDisplay});
   final Habit habit;
-  // TODO: update this to be index of date to display so that functionality can be added
-  // to iterate through days in the larger date display view
+  // TODO: update this to be index of date to display so that functionality
+  // can be added to iterate through days in the larger date display view
   final DateData? dateDisplay;
   final Function updateDateDisplay;
 
@@ -92,7 +94,8 @@ class HabitCalendar extends StatelessWidget {
                 Column(
                   children: [
                     Text(DateFormat(DateFormat.MONTH).format(DateTime(2025, month))),
-                    MonthDisplay(habit: habit, month: month, updateDateDisplay: updateDateDisplay),
+                    MonthDisplay(habit: habit, month: month,
+                                 updateDateDisplay: updateDateDisplay),
                   ],
                 ),
             ],
@@ -106,7 +109,8 @@ class HabitCalendar extends StatelessWidget {
 }
 
 class MonthDisplay extends StatelessWidget {
-  const MonthDisplay({super.key, required this.habit, required this.month, required this.updateDateDisplay});
+  const MonthDisplay({super.key, required this.habit, required this.month,
+                      required this.updateDateDisplay});
   final Habit habit;
   final int month;
   final Function updateDateDisplay;
@@ -126,7 +130,8 @@ class MonthDisplay extends StatelessWidget {
     // Add the sized boxes shift the boxes over
     int weekIndex = 0;
     weeks.add([]);
-    int offset = DateUtils.firstDayOffset(habit.year, month, DefaultMaterialLocalizations());
+    int offset = DateUtils.firstDayOffset(habit.year, month, 
+                                          DefaultMaterialLocalizations());
     _addOffset(offset, weeks[weekIndex]);
 
     // add all the dates to their correct week

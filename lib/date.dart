@@ -9,7 +9,8 @@ class DateData {
 }
 
 class DateView extends StatefulWidget {
-  const DateView({super.key, required this.dateData, required this.completedColor});
+  const DateView({super.key, required this.dateData,
+                  required this.completedColor});
   final DateData dateData;  
   // TODO: dedup with App Theme
   final Color completedColor;
@@ -28,7 +29,8 @@ class _DateViewState extends State<DateView> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // TODO: add left and right arrows to scan through dates in display view
+              // TODO: add left and right arrows to scan through dates
+              //       in display view
               // TODO: make this expanded and flexible for different screens
               SizedBox(
                 width: 200,
@@ -50,7 +52,8 @@ class _DateViewState extends State<DateView> {
           Column(
             children: [
               Text(DateFormat(DateFormat.WEEKDAY).format(widget.dateData.date)),
-              Text(DateFormat('${DateFormat.MONTH} ${DateFormat.DAY}').format(widget.dateData.date)),
+              Text(DateFormat('${DateFormat.MONTH} ${DateFormat.DAY}')
+                  .format(widget.dateData.date)),
               Text(DateFormat(DateFormat.YEAR).format(widget.dateData.date)),
             ],
           ),

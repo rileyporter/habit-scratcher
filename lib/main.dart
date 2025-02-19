@@ -46,8 +46,8 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  // TODO: should we move list of habits to AppState to update from list view directly
-  // instead of with callbacks?
+  // TODO: should we move list of habits to AppState to update from
+  //       list view directly instead of with callbacks?
   addHabit(Habit newHabit) {
     setState(() {
         habits = [...habits, newHabit];
@@ -61,7 +61,8 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       int removeIndex = habits.indexOf(remove);
       if (removeIndex < habits.length - 1) {
-        habits = [...habits.getRange(0, removeIndex), ...habits.getRange(removeIndex + 1, habits.length)];
+        habits = [...habits.getRange(0, removeIndex), 
+                  ...habits.getRange(removeIndex + 1, habits.length)];
       } else {
         habits = [...habits.getRange(0, removeIndex)];
       }
@@ -71,9 +72,12 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     if (_habitIndex < 0) {
-      return HabitListPage(title: widget.title, habits: habits, displayHabitAtIndex: updateHabitIndex, addHabit: addHabit);
+      return HabitListPage(title: widget.title, habits: habits,
+                           displayHabitAtIndex: updateHabitIndex,
+                           addHabit: addHabit);
     } else if (_habitIndex < habits.length) {
-      return HabitViewPage(habit: habits[_habitIndex], updateHabitIndex: updateHabitIndex);
+      return HabitViewPage(habit: habits[_habitIndex],
+                          updateHabitIndex: updateHabitIndex);
     } else {
       throw UnsupportedError('Unknown State');
     }
