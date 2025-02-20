@@ -8,22 +8,22 @@ class Habit {
   static final Random _random = Random();
   static const List<Color> COLOR_OPTIONS = [Colors.red,
                                   //Colors.yellow,
-                                  Colors.amber,
                                   Colors.orange,
+                                  Colors.amber,
                                   //Colors.deepOrange,
                                   //Colors.pink,
-                                  Colors.purple,
                                   //Colors.deepPurple,
-                                  Colors.indigo,
+                                  //Colors.indigo,
                                   //Colors.blue,
                                   //Colors.lightBlue,
+                                  Colors.lightGreen,
                                   Colors.cyan,
+                                  Colors.purple,
                                   //Colors.teal,
                                   //Colors.green,
-                                  Colors.lightGreen,
                                   //Colors.lime,
-                                  Colors.brown,
-                                  Colors.blueGrey
+                                  //Colors.brown,
+                                  //Colors.blueGrey
                                 ];
   
   final String title;

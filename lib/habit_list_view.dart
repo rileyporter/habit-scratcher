@@ -80,12 +80,14 @@ class HabitList extends StatelessWidget {
       children: [
         // TODO: wrap list of habits in a scrollable ListView and 
         //       learn about layout constraints
+        // TODO: make the habit list draggable to edit the order?
         for (int i = 0; i < habits.length; i++)
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 10.0),
             child: Semantics(
               button: true,
               // TODO: add an edit button with ability to delete the habit
+              //      or make them slidable with flutter_slidable for multiple actions
               child: ListTile(
                 onTap: () => {displayHabitAtIndex(i)},
                 title: Center(child: Text(habits[i].title)),

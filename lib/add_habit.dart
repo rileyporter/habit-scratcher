@@ -49,37 +49,16 @@ class _NewHabitFormState extends State<NewHabitForm> {
         padding: const EdgeInsets.symmetric(horizontal: 30.0),
         child: Column(
           children: [
-            Wrap(
-              children: [
-                // TODO: switching from an icon to a button added some implicit
-                // margin or padding offset. Figure out where it's coming from
-                // and remove
-                TextButton(
-                  onPressed: () {
-                    widget.switchToHabitAdder(false);
-                  },
-                  style: TextButton.styleFrom(
-                    minimumSize: Size.zero,
-                    padding: EdgeInsets.zero,
-                  ),
-                  child: Icon(Icons.arrow_back, size: 30)
-                ),
-                // TODO: fix row inside column sizing so text input wraps to same
-                // line as back arrow
-                Flexible(
-                  child: TextFormField(
-                    controller: _formController,
-                    maxLength: 50,
-                    onFieldSubmitted: (value) {_submitForm();},
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter a habit name';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-              ],
+            TextFormField(
+              controller: _formController,
+              maxLength: 50,
+              onFieldSubmitted: (value) {_submitForm();},
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter a habit name';
+                }
+                return null;
+              },
             ),
             Wrap(
               children: [

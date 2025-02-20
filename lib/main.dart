@@ -5,6 +5,11 @@ import 'habit.dart';
 
 // TODO: figure out how to store state in phone storage between loads of the app
 
+
+// TODO: switch to some Spacer() widgets or Expanded instead of sized box for all available space
+// Expandeds take a flex attribute to figure out what scale they should be
+// Align widgets can align containers to specific places
+
 const Color MAIN_COLOR = Colors.lime;
 
 void main() {
@@ -38,7 +43,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _habitIndex = -1;
-  List<Habit> habits = [];
+  List<Habit> habits = [Habit(title: 'seeded')];
 
   updateHabitIndex(int newIndex) {
     setState(() {

@@ -3,6 +3,9 @@ import 'package:intl/intl.dart';
 import 'date.dart';
 import 'habit.dart';
 
+// TODO: dedup with theme
+const Color MAIN_COLOR = Colors.lime;
+
 class HabitViewPage extends StatefulWidget {
   const HabitViewPage({super.key, required this.habit,
                       required this.updateHabitIndex});
@@ -16,7 +19,7 @@ class HabitViewPage extends StatefulWidget {
 class _HabitViewPageState extends State<HabitViewPage> {
   DateData? dateDisplay;
 
-  void updateDateDisplay(DateData? newDateDisplay) {
+  void _updateDateDisplay(DateData? newDateDisplay) {
     setState(() {
       dateDisplay = newDateDisplay;
     });
@@ -29,43 +32,57 @@ class _HabitViewPageState extends State<HabitViewPage> {
         child: Column(
           children: [ 
             SizedBox(height: 20),
-
-            // top bar
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Row(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      widget.updateHabitIndex(-1);
-                    },
-                    child: Icon(Icons.menu, size: 40),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 10.0),
-                        child: Semantics(
-                          button: true,
-                          child: ListTile(
-                            onTap: () {updateDateDisplay(null);},
-                            title: Center(child: Text(widget.habit.title)),
-                            tileColor: widget.habit.color
-                          ),
-                        ),
-
-                    ),
-                  ),
-                ],
-              ),
-            ),
-  
+            Header(habit: widget.habit, updateHabitIndex: widget.updateHabitIndex,
+                  updateDateDisplay: _updateDateDisplay),
             SizedBox(height: 20),
-
-            // data for this habit's calendar. let's separate out
             HabitCalendar(habit: widget.habit, dateDisplay: dateDisplay,
-                          updateDateDisplay: updateDateDisplay),
+                          updateDateDisplay: _updateDateDisplay),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class Header extends StatelessWidget {
+  const Header({super.key, required this.habit,
+                required this.updateHabitIndex, required this.updateDateDisplay});
+  final Habit habit;
+  final Function updateHabitIndex;
+  final Function updateDateDisplay;
+  
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Row(
+        children: [
+          // menu button
+          GestureDetector(
+            onTap: () {
+              updateHabitIndex(-1);
+            },
+            child: Container(
+              padding: const EdgeInsets.all(5.0),
+              color: MAIN_COLOR,
+              child: Icon(Icons.menu, size: 40)
+            ),
+          ),
+          // Header title
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 10.0),
+                child: Semantics(
+                  button: true,
+                  child: ListTile(
+                    onTap: () {updateDateDisplay(null);},
+                    title: Center(child: Text(habit.title)),
+                    tileColor: habit.color
+                  ),
+                ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -83,25 +100,15 @@ class HabitCalendar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (dateDisplay == null) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // calendar
-            // need this column to be scrollable
-          Column(
+        return Expanded(
+          child: ListView(
             children: [
               for (int month = 1; month <= 12; month++)
-                Column(
-                  children: [
-                    Text(DateFormat(DateFormat.MONTH).format(DateTime(2025, month))),
-                    MonthDisplay(habit: habit, month: month,
-                                 updateDateDisplay: updateDateDisplay),
-                  ],
-                ),
+                MonthDisplay(habit: habit, month: month,
+                                updateDateDisplay: updateDateDisplay),
             ],
           ),
-        ],
-      );
+        );
     } else {
       return DateView(dateData: dateDisplay!, completedColor: habit.color);
     }
@@ -141,19 +148,7 @@ class MonthDisplay extends StatelessWidget {
       while(i < 7 && dateIndex < dateData.length) {
         DateData currDate = dateData[dateIndex];
         weeks[weekIndex].add(
-          SizedBox(
-            width: 50,
-            height: 50,
-            child: GestureDetector(
-              onTap: () {
-                updateDateDisplay(currDate);
-              },
-              child: Card(
-                color: currDate.completed ? habit.color : null,
-                child: Center(child: Text('${currDate.date.day}')),
-              ),
-            ),
-          )
+          DateBox(updateDateDisplay: updateDateDisplay, currDate: currDate, habit: habit)
         );
         i++;
         dateIndex++;
@@ -171,12 +166,51 @@ class MonthDisplay extends StatelessWidget {
     
     return Column(
       children: [
-        for (var week in weeks)
-          Row(
-            children: week,
-          ),
+        // Month header
+        Text(DateFormat(DateFormat.MONTH).format(DateTime(2025, month))),
+        // Grid of dates
+        // TODO: should switch to grid instead of rows and columns?
+        Column(
+          children: [
+            for (var week in weeks)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: week,
+              ),
+          ],
+        ),
       ],
     );
   }
 
+}
+
+class DateBox extends StatelessWidget {
+  const DateBox({
+    super.key,
+    required this.updateDateDisplay,
+    required this.currDate,
+    required this.habit,
+  });
+
+  final Function updateDateDisplay;
+  final DateData currDate;
+  final Habit habit;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 50,
+      height: 50,
+      child: GestureDetector(
+        onTap: () {
+          updateDateDisplay(currDate);
+        },
+        child: Card(
+          color: currDate.completed ? habit.color : null,
+          child: Center(child: Text('${currDate.date.day}')),
+        ),
+      ),
+    );
+  }
 }

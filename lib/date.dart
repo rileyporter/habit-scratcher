@@ -8,6 +8,8 @@ class DateData {
   DateData({required this.date});
 }
 
+// TODO: make the date detail view slide in with a transition from the package:animation?
+// using OpenContainer with an open and closed widget defined
 class DateView extends StatefulWidget {
   const DateView({super.key, required this.dateData,
                   required this.completedColor});
@@ -30,7 +32,7 @@ class _DateViewState extends State<DateView> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // TODO: add left and right arrows to scan through dates
-              //       in display view
+              //       in display view (PageView and PageController instead?)
               // TODO: make this expanded and flexible for different screens
               SizedBox(
                 width: 200,
@@ -57,15 +59,22 @@ class _DateViewState extends State<DateView> {
               Text(DateFormat(DateFormat.YEAR).format(widget.dateData.date)),
             ],
           ),
-          SizedBox(height: 30),
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                widget.dateData.completed = false;
-              });
-            },
-            child: Icon(Icons.refresh, size: 40)
-          ),
+          if (widget.dateData.completed)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical:30.0),
+              child: TextButton(
+                onPressed: () {
+                  setState(() {
+                    widget.dateData.completed = false;
+                  });
+                },
+                style: TextButton.styleFrom(
+                  minimumSize: Size.zero,
+                  padding: EdgeInsets.zero,
+                ),
+                child: Icon(Icons.refresh, size: 40)
+              ),
+            ),
         ],
       );
   }
