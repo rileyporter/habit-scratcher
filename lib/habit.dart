@@ -44,8 +44,10 @@ class Habit {
     for (int month = 1; month <= 12; month++) {
       List<DateData> dates = [];
       for (int day = 1; day <= DateUtils.getDaysInMonth(year, month); day++) {
+        Color randomOpacityWhite = Color.from(alpha: Random().nextDouble(), red: 1.0, green: 1.0, blue: 1.0);
+        Color randomCompletedColor = Color.alphaBlend(randomOpacityWhite, this.color);
         dates.add(
-          DateData(date: DateUtils.dateOnly(DateTime(year, month, day)))
+          DateData(date: DateUtils.dateOnly(DateTime(year, month, day)), completedColor: randomCompletedColor)
         );
       }
       calendar[month] = dates;

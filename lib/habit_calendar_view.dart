@@ -101,6 +101,8 @@ class HabitCalendar extends StatelessWidget {
   Widget build(BuildContext context) {
     if (dateDisplay == null) {
         return Expanded(
+          // TODO: add a scrollbar, and figure out if it's possible to jump to today's
+          // date or the most recently edited date for better UX
           child: ListView(
             children: [
               for (int month = 1; month <= 12; month++)
@@ -110,7 +112,7 @@ class HabitCalendar extends StatelessWidget {
           ),
         );
     } else {
-      return DateView(dateData: dateDisplay!, completedColor: habit.color);
+      return DateView(dateData: dateDisplay!, habitColor: habit.color, updateDateDisplay: updateDateDisplay);
     }
   }  
 }
@@ -207,7 +209,7 @@ class DateBox extends StatelessWidget {
           updateDateDisplay(currDate);
         },
         child: Card(
-          color: currDate.completed ? habit.color : null,
+          color: currDate.completed ? currDate.completedColor : null,
           child: Center(child: Text('${currDate.date.day}')),
         ),
       ),
