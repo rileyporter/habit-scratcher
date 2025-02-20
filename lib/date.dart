@@ -54,14 +54,19 @@ class _DateViewState extends State<DateView> {
           // TODO: Fix the sizing of the column elements so the button is actually
           // always in the lower right
           // Back button
-          Align(
-            alignment: Alignment.bottomRight,
-            child: ElevatedButton(
-              onPressed: () {widget.updateDateDisplay(null);},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: widget.habitColor,
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Align(
+              alignment: Alignment.bottomRight,
+              child: TextButton(
+                onPressed: () {widget.updateDateDisplay(null);},
+                style: TextButton.styleFrom(
+                  minimumSize: Size.zero,
+                  padding: EdgeInsets.all(10.0),
+                  backgroundColor: widget.habitColor,
+                ),
+                child: Icon(Icons.keyboard_return, size: 30),
               ),
-              child: Icon(Icons.keyboard_return),
             ),
           ),
         ],

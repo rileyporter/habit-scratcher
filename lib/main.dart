@@ -43,7 +43,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _habitIndex = -1;
-  List<Habit> habits = [Habit(title: 'seeded')];
+  List<Habit> habits = [Habit(title: 'seeded'), Habit(title: 'seeded'), Habit(title: 'seeded'), Habit(title: 'seeded'), Habit(title: 'seeded'), Habit(title: 'seeded'), Habit(title: 'seeded'),
+                        ]; //Habit(title: 'seeded'), Habit(title: 'seeded'),Habit(title: 'seeded'),Habit(title: 'seeded'),Habit(title: 'seeded'),Habit(title: 'seeded'),];
 
   updateHabitIndex(int newIndex) {
     setState(() {

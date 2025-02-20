@@ -3,7 +3,6 @@ import 'date.dart';
 import 'dart:math';
 
 
-
 class Habit {
   static final Random _random = Random();
   static const List<Color> COLOR_OPTIONS = [Colors.red,
