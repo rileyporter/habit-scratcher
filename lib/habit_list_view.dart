@@ -7,11 +7,11 @@ const Color MAIN_COLOR = Colors.lime;
 
 class HabitListPage extends StatefulWidget {
   const HabitListPage({super.key, required this.title,
-                      required this.habits, required this.displayHabitAtIndex,
+                      required this.habits, required this.updateDisplayHabit,
                       required this.addHabit});
   final String title;
   final List<Habit> habits;
-  final Function displayHabitAtIndex;
+  final Function updateDisplayHabit;
   final Function addHabit;
 
   @override
@@ -41,7 +41,7 @@ class _HabitListPageState extends State<HabitListPage> {
                 NewHabitForm(addHabit: widget.addHabit,
                             switchToHabitAdder: switchToHabitAdder) 
               : HabitList(habits: widget.habits, 
-                               displayHabitAtIndex: widget.displayHabitAtIndex, 
+                               updateDisplayHabit: widget.updateDisplayHabit, 
                                switchToHabitAdder: switchToHabitAdder),
             if (!addingHabit)
               AddHabitButton(switchToHabitAdder: switchToHabitAdder),
@@ -78,11 +78,11 @@ class Header extends StatelessWidget {
 
 class HabitList extends StatelessWidget {
   const HabitList({super.key, required this.habits, 
-                  required this.displayHabitAtIndex,
+                  required this.updateDisplayHabit,
                   required this.switchToHabitAdder});
 
   final List<Habit> habits;
-  final Function displayHabitAtIndex;
+  final Function updateDisplayHabit;
   final Function switchToHabitAdder;
 
 
@@ -94,7 +94,7 @@ class HabitList extends StatelessWidget {
         children: [
           // TODO: make the habit list draggable to edit the order?
           for (int i = 0; i < habits.length; i++)
-            HabitListTile(displayHabitAtIndex: displayHabitAtIndex, i: i, habits: habits),
+            HabitListTile(updateDisplayHabit: updateDisplayHabit, i: i, habits: habits),
         ],
       ),
     );
@@ -104,12 +104,12 @@ class HabitList extends StatelessWidget {
 class HabitListTile extends StatelessWidget {
   const HabitListTile({
     super.key,
-    required this.displayHabitAtIndex,
+    required this.updateDisplayHabit,
     required this.i,
     required this.habits,
   });
 
-  final Function displayHabitAtIndex;
+  final Function updateDisplayHabit;
   final int i;
   final List<Habit> habits;
 
@@ -126,7 +126,8 @@ class HabitListTile extends StatelessWidget {
         //      tiles goes away when they should be out of view, but the background
         //      is still visible.
         child: ListTile(
-          onTap: () => {displayHabitAtIndex(i)},
+          key: Key('$i'), // TODO: this key won't be updated on reorder, is that... fine? Not used for anything else?
+          onTap: () => {updateDisplayHabit(habits[i])},
           title: Center(child: Text(habits[i].title)),
           tileColor: habits[i].color,
         ),

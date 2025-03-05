@@ -42,13 +42,12 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _habitIndex = -1;
-  List<Habit> habits = [Habit(title: 'seeded'), Habit(title: 'seeded'), Habit(title: 'seeded'), Habit(title: 'seeded'), Habit(title: 'seeded'), Habit(title: 'seeded'), Habit(title: 'seeded'),
-                        ]; //Habit(title: 'seeded'), Habit(title: 'seeded'),Habit(title: 'seeded'),Habit(title: 'seeded'),Habit(title: 'seeded'),Habit(title: 'seeded'),];
+  Habit? displayHabit;
+  List<Habit> habits = [Habit(title: 'one'), Habit(title: 'two'), Habit(title: 'three'), ]; 
 
-  updateHabitIndex(int newIndex) {
+  updateDisplayHabit(Habit? habit) {
     setState(() {
-      _habitIndex = newIndex;
+      displayHabit = habit;
     });
   }
 
@@ -77,15 +76,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    if (_habitIndex < 0) {
+    if (displayHabit == null) {
       return HabitListPage(title: widget.title, habits: habits,
-                           displayHabitAtIndex: updateHabitIndex,
+                           updateDisplayHabit: updateDisplayHabit,
                            addHabit: addHabit);
-    } else if (_habitIndex < habits.length) {
-      return HabitViewPage(habit: habits[_habitIndex],
-                          updateHabitIndex: updateHabitIndex);
     } else {
-      throw UnsupportedError('Unknown State');
+      return HabitViewPage(habit: displayHabit!,
+                          updateDisplayHabit: updateDisplayHabit);
     }
   }
 }

@@ -8,9 +8,9 @@ const Color MAIN_COLOR = Colors.lime;
 
 class HabitViewPage extends StatefulWidget {
   const HabitViewPage({super.key, required this.habit,
-                      required this.updateHabitIndex});
+                      required this.updateDisplayHabit});
   final Habit habit;
-  final Function updateHabitIndex;
+  final Function updateDisplayHabit;
 
   @override
   State<HabitViewPage> createState() => _HabitViewPageState();
@@ -32,7 +32,7 @@ class _HabitViewPageState extends State<HabitViewPage> {
         child: Column(
           children: [ 
             SizedBox(height: 20),
-            Header(habit: widget.habit, updateHabitIndex: widget.updateHabitIndex,
+            Header(habit: widget.habit, updateDisplayHabit: widget.updateDisplayHabit,
                   updateDateDisplay: _updateDateDisplay),
             SizedBox(height: 20),
             HabitCalendar(habit: widget.habit, dateDisplay: dateDisplay,
@@ -46,9 +46,9 @@ class _HabitViewPageState extends State<HabitViewPage> {
 
 class Header extends StatelessWidget {
   const Header({super.key, required this.habit,
-                required this.updateHabitIndex, required this.updateDateDisplay});
+                required this.updateDisplayHabit, required this.updateDateDisplay});
   final Habit habit;
-  final Function updateHabitIndex;
+  final Function updateDisplayHabit;
   final Function updateDateDisplay;
   
   @override
@@ -60,7 +60,7 @@ class Header extends StatelessWidget {
           // menu button
           GestureDetector(
             onTap: () {
-              updateHabitIndex(-1);
+              updateDisplayHabit(null);
             },
             child: Container(
               padding: const EdgeInsets.all(5.0),
