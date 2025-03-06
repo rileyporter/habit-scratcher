@@ -8,11 +8,13 @@ const Color MAIN_COLOR = Colors.lime;
 class HabitListPage extends StatefulWidget {
   const HabitListPage({super.key, required this.title,
                       required this.habits, required this.updateDisplayHabit,
-                      required this.addHabit});
+                      required this.addHabit,
+                      required this.reorderHabits});
   final String title;
   final List<Habit> habits;
   final Function updateDisplayHabit;
   final Function addHabit;
+  final Function reorderHabits;
 
   @override
   State<HabitListPage> createState() => _HabitListPageState();
@@ -42,7 +44,8 @@ class _HabitListPageState extends State<HabitListPage> {
                             switchToHabitAdder: switchToHabitAdder) 
               : HabitList(habits: widget.habits, 
                                updateDisplayHabit: widget.updateDisplayHabit, 
-                               switchToHabitAdder: switchToHabitAdder),
+                               switchToHabitAdder: switchToHabitAdder,
+                               reorderHabits: widget.reorderHabits),
             if (!addingHabit)
               AddHabitButton(switchToHabitAdder: switchToHabitAdder),
           ],
@@ -76,26 +79,32 @@ class Header extends StatelessWidget {
   }
 }
 
+// TODO: list of habits should probably live here in HabitList widget or 
+//       in AppState instead of using these callbacks to update
 class HabitList extends StatelessWidget {
   const HabitList({super.key, required this.habits, 
                   required this.updateDisplayHabit,
-                  required this.switchToHabitAdder});
+                  required this.switchToHabitAdder,
+                  required this.reorderHabits});
 
   final List<Habit> habits;
   final Function updateDisplayHabit;
   final Function switchToHabitAdder;
+  final Function reorderHabits;
 
 
   @override
   Widget build(BuildContext context) {
-    // TODO: ability to reorder habits displayed in list
     return Expanded(
-      child: ListView(
+      child: ReorderableListView(
+        padding: const EdgeInsets.symmetric(horizontal: 30.0),
         children: [
-          // TODO: make the habit list draggable to edit the order?
           for (int i = 0; i < habits.length; i++)
-            HabitListTile(updateDisplayHabit: updateDisplayHabit, i: i, habits: habits),
+            HabitListTile(key: Key('$i'), updateDisplayHabit: updateDisplayHabit, habit: habits[i]),
         ],
+        onReorder: (int oldIndex, int newIndex) {
+          reorderHabits(oldIndex, newIndex);
+        },
       ),
     );
   }
@@ -105,31 +114,26 @@ class HabitListTile extends StatelessWidget {
   const HabitListTile({
     super.key,
     required this.updateDisplayHabit,
-    required this.i,
-    required this.habits,
+    required this.habit,
   });
 
   final Function updateDisplayHabit;
-  final int i;
-  final List<Habit> habits;
+  final Habit habit;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 10.0),
-      child: Semantics(
-        button: true,
-        // TODO: add an edit button with ability to delete the habit
-        //      or make them slidable with flutter_slidable for multiple actions
-        // TODO: figure out why ListTiles mean this list overflows
-        //      onto the header and under the add button. The text in the list
-        //      tiles goes away when they should be out of view, but the background
-        //      is still visible.
-        child: ListTile(
-          key: Key('$i'), // TODO: this key won't be updated on reorder, is that... fine? Not used for anything else?
-          onTap: () => {updateDisplayHabit(habits[i])},
-          title: Center(child: Text(habits[i].title)),
-          tileColor: habits[i].color,
+      padding: EdgeInsets.symmetric(vertical: 6.0),
+      child: Card(
+        child: Semantics(
+          button: true,
+          // TODO: add an edit button with ability to delete the habit
+          //      or make them slidable with flutter_slidable for multiple actions
+          child: ListTile(
+            onTap: () => {updateDisplayHabit(habit)},
+            title: Center(child: Text(habit.title)),
+            tileColor: habit.color,
+          ),
         ),
       ),
     );

@@ -43,7 +43,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   Habit? displayHabit;
-  List<Habit> habits = [Habit(title: 'one'), Habit(title: 'two'), Habit(title: 'three'), ]; 
+  List<Habit> habits = [Habit(title: 'one'), Habit(title: 'two'), Habit(title: 'three'),  ]; 
 
   updateDisplayHabit(Habit? habit) {
     setState(() {
@@ -60,17 +60,27 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   removeHabit(Habit remove) {
-    if (habits.contains(remove)) {
+    if (!habits.contains(remove)) {
       throw ArgumentError('Unknown habit');
     }
     setState(() {
-      int removeIndex = habits.indexOf(remove);
-      if (removeIndex < habits.length - 1) {
-        habits = [...habits.getRange(0, removeIndex), 
-                  ...habits.getRange(removeIndex + 1, habits.length)];
-      } else {
-        habits = [...habits.getRange(0, removeIndex)];
+      habits.removeAt(habits.indexOf(remove));
+    });
+  }
+
+  reorderHabits(int oldIndex, int newIndex) {
+    // setState(() {
+    //   if (oldIndex < newIndex) {
+    //     newIndex -= 1;
+    //   }
+    //   final int item = _items.removeAt(oldIndex);
+    //   _items.insert(newIndex, item);
+    // });
+    setState(() {
+      if (oldIndex < newIndex) {
+        newIndex -= 1;
       }
+      habits.insert(newIndex, habits.removeAt(oldIndex));
     });
   }
 
@@ -79,7 +89,8 @@ class _MyHomePageState extends State<MyHomePage> {
     if (displayHabit == null) {
       return HabitListPage(title: widget.title, habits: habits,
                            updateDisplayHabit: updateDisplayHabit,
-                           addHabit: addHabit);
+                           addHabit: addHabit,
+                           reorderHabits: reorderHabits);
     } else {
       return HabitViewPage(habit: displayHabit!,
                           updateDisplayHabit: updateDisplayHabit);
